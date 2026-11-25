@@ -1,0 +1,38 @@
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+server/venv/
+build/
+dist/
+server/build/
+server/dist/
+*.spec.bak
+
+# Node / Capacitor
+node_modules/
+android/node_modules/
+www/
+android/www/
+android/android/
+
+# Local config with secrets
+config/*.local.json
+*.local.json
+.env
+
+# Generated media (keep bundled samples)
+*.mp4
+*.webm
+*.mov
+!web/samples/*.mp4
+
+# Logs
+*.log

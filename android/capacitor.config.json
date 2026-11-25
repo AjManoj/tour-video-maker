@@ -1,0 +1,13 @@
+{
+  "appId": "com.tourvideomaker.app",
+  "appName": "Day Tour Video Maker",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true
+  },
+  "android": {
+    "path": "native-android",
+    "allowMixedContent": true
+  }
+}

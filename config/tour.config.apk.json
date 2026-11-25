@@ -1,0 +1,96 @@
+{
+  "$schema": "./tour.config.schema.json",
+  "runtime": "apk",
+  "ai": {
+    "tasks": {
+      "pick": "auto",
+      "captions": "auto",
+      "sort": "auto",
+      "plan": "auto"
+    },
+    "order": [
+      "browserai",
+      "ollama",
+      "gemini",
+      "openai",
+      "claude"
+    ],
+    "providers": {
+      "claude": {
+        "enabled": false,
+        "via": "apiKey",
+        "apiKey": "",
+        "model": "claude-haiku-5-5"
+      },
+      "ollama": {
+        "enabled": true,
+        "url": "http://192.168.1.50:8765/api/ollama",
+        "model": "qwen3-vl:4b"
+      },
+      "openai": {
+        "enabled": false,
+        "label": "LM Studio / OpenAI-compatible",
+        "url": "http://localhost:1234/v1",
+        "apiKey": "",
+        "model": ""
+      },
+      "gemini": {
+        "enabled": false,
+        "apiKey": "",
+        "model": "gemini-flash-latest"
+      },
+      "browserai": {
+        "enabled": true,
+        "backend": "webgpu",
+        "models": {
+          "faces": "mediapipe-face",
+          "sort": "clip-vit-b32"
+        }
+      }
+    }
+  },
+  "engines": {
+    "jobs": {
+      "export": [
+        "python",
+        "webcodecs",
+        "browser",
+        "android"
+      ],
+      "autopick": [
+        "python",
+        "wasm",
+        "browser"
+      ],
+      "routeMap": [
+        "python",
+        "browser"
+      ]
+    },
+    "providers": {
+      "python": {
+        "enabled": true,
+        "url": "http://192.168.1.50:8765"
+      },
+      "android": {
+        "enabled": true
+      },
+      "webcodecs": {
+        "enabled": "auto"
+      },
+      "wasm": {
+        "enabled": "auto"
+      },
+      "browser": {
+        "enabled": true
+      }
+    }
+  },
+  "lan": {
+    "allowPhone": false,
+    "port": 8765
+  },
+  "storage": {
+    "projects": "~/Videos/TourMaker"
+  }
+}

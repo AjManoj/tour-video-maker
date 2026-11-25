@@ -1,0 +1,333 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tour.config.schema.json",
+  "title": "Day Tour Video Maker config",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "runtime": {
+      "enum": [
+        "auto",
+        "browser",
+        "file",
+        "server",
+        "exe",
+        "apk"
+      ],
+      "default": "auto"
+    },
+    "ai": {
+      "type": "object",
+      "properties": {
+        "tasks": {
+          "type": "object",
+          "properties": {
+            "pick": {
+              "enum": [
+                "auto",
+                "none",
+                "ollama",
+                "openai",
+                "gemini",
+                "claude",
+                "browserai"
+              ]
+            },
+            "captions": {
+              "enum": [
+                "auto",
+                "none",
+                "ollama",
+                "openai",
+                "gemini",
+                "claude",
+                "browserai"
+              ]
+            },
+            "sort": {
+              "enum": [
+                "auto",
+                "none",
+                "ollama",
+                "openai",
+                "gemini",
+                "claude",
+                "browserai"
+              ]
+            },
+            "plan": {
+              "enum": [
+                "auto",
+                "none",
+                "ollama",
+                "openai",
+                "gemini",
+                "claude",
+                "browserai"
+              ]
+            }
+          },
+          "additionalProperties": {
+            "enum": [
+              "auto",
+              "none",
+              "ollama",
+              "openai",
+              "gemini",
+              "claude",
+              "browserai"
+            ]
+          }
+        },
+        "order": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "ollama",
+              "openai",
+              "gemini",
+              "claude",
+              "browserai"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "providers": {
+          "type": "object",
+          "properties": {
+            "claude": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "via": {
+                  "enum": [
+                    "claude.ai",
+                    "apiKey"
+                  ]
+                },
+                "apiKey": {
+                  "type": "string"
+                },
+                "model": {
+                  "type": "string"
+                }
+              }
+            },
+            "ollama": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "model": {
+                  "type": "string"
+                }
+              }
+            },
+            "openai": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "apiKey": {
+                  "type": "string"
+                },
+                "model": {
+                  "type": "string"
+                }
+              }
+            },
+            "gemini": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "apiKey": {
+                  "type": "string"
+                },
+                "model": {
+                  "type": "string"
+                }
+              }
+            },
+            "browserai": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "backend": {
+                  "enum": [
+                    "webgpu",
+                    "wasm"
+                  ]
+                },
+                "models": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "engines": {
+      "type": "object",
+      "properties": {
+        "jobs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "android",
+                "python",
+                "webcodecs",
+                "wasm",
+                "browser"
+              ]
+            },
+            "uniqueItems": true
+          }
+        },
+        "providers": {
+          "type": "object",
+          "properties": {
+            "android": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "oneOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "const": "auto"
+                    }
+                  ]
+                },
+                "url": {
+                  "type": "string"
+                }
+              }
+            },
+            "python": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "oneOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "const": "auto"
+                    }
+                  ]
+                },
+                "url": {
+                  "type": "string"
+                }
+              }
+            },
+            "webcodecs": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "oneOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "const": "auto"
+                    }
+                  ]
+                },
+                "url": {
+                  "type": "string"
+                }
+              }
+            },
+            "wasm": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "oneOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "const": "auto"
+                    }
+                  ]
+                },
+                "url": {
+                  "type": "string"
+                }
+              }
+            },
+            "browser": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "oneOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "const": "auto"
+                    }
+                  ]
+                },
+                "url": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "lan": {
+      "type": "object",
+      "properties": {
+        "allowPhone": {
+          "type": "boolean",
+          "default": false
+        },
+        "port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535,
+          "default": 8765
+        }
+      }
+    },
+    "storage": {
+      "type": "object",
+      "properties": {
+        "projects": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

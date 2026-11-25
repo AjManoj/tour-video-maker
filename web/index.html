@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Day Tour Video Maker</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css"></head><body>
+<header>
+  <h1>Day Tour Video Maker</h1><span class="rt" id="rtBadge" title="Where this app is running">…</span><span class="sp"></span>
+  <button class="btn" id="undo" disabled>↶ Undo</button>
+  <label class="btn" style="flex-direction:row;color:inherit;font-size:16px">♫ Music<input type="file" id="music" accept="audio/*" class="hidden"></label>
+  <button class="btn pri" id="export">Export video</button>
+</header>
+<div class="wrap">
+  <section class="stage">
+    <div class="screen"><canvas id="cv" width="720" height="1280"></canvas></div>
+    <div class="chap" id="chap"></div>
+    <div class="transport"><button class="btn" id="play" aria-label="Play">▶</button><input type="range" id="seek" min="0" max="1000" value="0" aria-label="Position"><span class="tc" id="tc">0:00</span></div>
+    <div class="status" id="status" role="status"></div>
+  </section>
+  <section>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" data-p="steps">Steps</button>
+      <button class="tab" role="tab" aria-selected="false" data-p="help">Helpers</button>
+      <button class="tab" role="tab" aria-selected="false" data-p="day">Day</button>
+      <button class="tab" role="tab" aria-selected="false" data-p="tpl">Templates</button>
+      <button class="tab" role="tab" aria-selected="false" data-p="style">Style</button>
+      <button class="tab" role="tab" aria-selected="false" data-p="set">Settings</button>
+    </div>
+    <div class="panel on" id="p-steps">
+      <div id="steps"></div>
+      <div class="card"><b>Add a step</b><div class="lib" id="lib" style="margin-top:8px"></div></div>
+    </div>
+    <div class="panel" id="p-help">
+      <div class="card meter"><div><small style="color:var(--mut);font-weight:700">AI usage this session (estimate)</small><b id="tokTot">0 tokens</b></div><span class="note" id="aiAvail" style="max-width:30ch"></span></div>
+      <div class="card task"><h3>🎯 Pick the best moment in each video</h3><p class="note">Used when you add a video or tap “Auto-pick”.</p><div class="modes" data-task="pick"></div></div>
+      <div class="card task"><h3>✍️ Titles &amp; captions</h3><p class="note">Fills each step's title and caption.</p><div class="modes" data-task="cap"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn sm" id="capAll">Fill captions for all steps</button></div></div>
+      <div class="card task"><h3>🗂️ Sort a whole day into steps</h3><p class="note">Drop all of a day's photos and videos at once; they're grouped into steps.</p><div class="modes" data-task="sort"></div>
+        <label class="drop" id="dropLbl">＋ Drop or choose a whole day's files<input type="file" id="dayIn" accept="image/*,video/*" multiple class="hidden"></label></div>
+    </div>
+    <div class="panel" id="p-day">
+      <div class="card grid2">
+        <label>Trip name<input type="text" id="dTrip" maxlength="40"></label>
+        <label>Day number<input type="number" id="dNum" min="1" max="60"></label>
+        <label>Place<input type="text" id="dPlace" maxlength="40"></label>
+        <label>Date<input type="date" id="dDate"></label>
+        <label>Intro card<select id="dIntro"><option value="1">Show</option><option value="0">Hide</option></select></label>
+        <label>Ending card<select id="dOutro"><option value="1">Show</option><option value="0">Hide</option></select></label>
+      </div>
+    </div>
+    <div class="panel" id="p-tpl">
+      <div class="card"><b>✨ Plan my day</b><p class="note">Paste today's plan or itinerary. AI turns it into steps; with AI off, simple keyword rules do it.</p>
+        <textarea id="planTxt" rows="4" placeholder="e.g. Breakfast at the buffet, pool with the kids, lunch at the beach grill, sunset walk, dinner at the hibachi"></textarea>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center"><button class="btn sm" id="planGo">✨ Plan my day</button><span class="note" id="planBy" style="margin:0"></span></div></div>
+      <div class="card"><b>Start a day from a template</b><p class="note">Replaces your steps (media is kept on steps with the same type). Undo brings them back.</p><div class="tpls" id="tpls" style="margin-top:10px"></div></div>
+      <div class="card"><b>My templates</b><div class="lib" id="mytpl" style="margin-top:8px"></div>
+        <div class="trim" style="margin-top:10px"><div class="rw"><input type="text" id="tplName" placeholder="Name, e.g. Resort day" maxlength="30" style="flex:1"><button class="btn sm" id="tplSave">Save current steps</button></div></div>
+        <p class="note">Saved in this browser only.</p></div>
+    </div>
+    <div class="panel" id="p-style">
+      <div class="card"><b>Colour theme</b><div class="sw" id="themes" style="margin-top:8px"></div></div>
+      <div class="card grid2">
+        <label>Default transition<select id="sTr"><option value="fade">Crossfade</option><option value="zoom">Zoom</option><option value="slide">Slide</option><option value="whip">Whip pan</option><option value="iris">Iris</option></select></label>
+        <label>Transition length<select id="sTd"><option>0.4</option><option selected>0.7</option><option>1.0</option></select></label>
+        <label>Photo length (s)<input type="number" id="sPh" min="1" max="8" step="0.5"></label>
+        <label>Auto-pick clip length (s)<input type="number" id="sCl" min="1.5" max="10" step="0.5"></label>
+        <label>Clip sound in export<select id="sSnd"><option value="1">Keep</option><option value="0">Mute</option></select></label>
+        <label>Chapter badge<select id="sBadge"><option value="1">Show</option><option value="0">Hide</option></select></label>
+      </div>
+    </div>
+    <div class="panel" id="p-set">
+      <div class="card"><div class="meter"><div><small style="color:var(--mut);font-weight:700">Running as</small><b id="rtName">…</b></div><button class="btn sm" id="setRefresh">↻ Re-check</button></div><p class="note" id="rtNote"></p></div>
+      <div class="card"><h3 class="sh3">🤖 AI options</h3><p class="note">Which AI does each job. “Auto” uses the first available provider in the order below; “None” keeps it to code only.</p>
+        <div class="grid2" id="aiTasks" style="margin-top:10px"></div>
+        <div id="aiProv" style="margin-top:12px"></div></div>
+      <div class="card"><h3 class="sh3">⚙️ Engines</h3><p class="note">Which code runs each job. The first available engine in each list is used.</p>
+        <div id="engJobs" style="margin-top:10px"></div>
+        <div id="engList" style="margin-top:12px"></div></div>
+      <div class="card"><button class="btn sm" id="setReset">Reset settings to defaults</button><p class="note">API keys you type here stay in this browser. On the laptop server, keys live in its config file and are never sent to the page.</p></div>
+    </div>
+  </section>
+</div>
+<input type="file" id="fileIn" accept="image/*,video/*" multiple class="hidden">
+<script src="js/config.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/engines.js"></script>
+<script src="js/app.js"></script>
+</body></html>
